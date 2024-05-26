@@ -287,25 +287,16 @@ document.addEventListener("DOMContentLoaded", function () {
             <tr>
                 <th></th>
                 <th>Estimado</th>
-                <th>Real</th>
+                <th>Realizado</th>
             </tr>
             <tr>
-                <td>Lucro Mensal</td>
+                <td>Lucro</td>
                 <td style="color: ${
                   lucroMensalEstimado >= 0 ? "green" : "red"
                 };">R$ ${lucroMensalEstimado.toFixed(2)}</td>
                 <td style="color: ${
                   lucroMensalReal >= 0 ? "green" : "red"
                 };">R$ ${lucroMensalReal.toFixed(2)}</td>
-            </tr>
-            <tr>
-                <td>Lucro Semanal</td>
-                <td style="color: ${
-                  lucroSemanalEstimado >= 0 ? "green" : "red"
-                };">R$ ${lucroSemanalEstimado.toFixed(2)}</td>
-                <td style="color: ${
-                  lucroSemanalReal >= 0 ? "green" : "red"
-                };">R$ ${lucroSemanalReal.toFixed(2)}</td>
             </tr>
             <tr>
                 <td>Retirada de Lucro</td>
