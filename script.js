@@ -14,8 +14,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const formCustos = document.getElementById("form-custos");
 
   let produtos = JSON.parse(localStorage.getItem("produtos")) || [];
-  let totalEntradas = 0;
-  let totalSaidas = 0;
+  let entradas = JSON.parse(localStorage.getItem("entradas")) || [];
+  let saidas = JSON.parse(localStorage.getItem("saidas")) || [];
   let custosFixos = JSON.parse(localStorage.getItem("custosFixos")) || {
     aluguel: 0,
     luz: 0,
@@ -71,8 +71,8 @@ document.addEventListener("DOMContentLoaded", function () {
       tabelaProdutos.appendChild(tr);
     });
     totalProdutosSpan.textContent = produtos.length;
-    totalEntradasSpan.textContent = totalEntradas;
-    totalSaidasSpan.textContent = totalSaidas;
+    totalEntradasSpan.textContent = entradas.length;
+    totalSaidasSpan.textContent = saidas.length;
     estoqueAtualSpan.textContent = totalEstoque;
   }
 
@@ -95,10 +95,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
   window.limparDados = function () {
     localStorage.removeItem("produtos");
+    localStorage.removeItem("entradas");
+    localStorage.removeItem("saidas");
     localStorage.removeItem("custosFixos");
     produtos = [];
-    totalEntradas = 0;
-    totalSaidas = 0;
+    entradas = [];
+    saidas = [];
     custosFixos = {
       aluguel: 0,
       luz: 0,
@@ -137,8 +139,9 @@ document.addEventListener("DOMContentLoaded", function () {
       document.getElementById("quantidade-entrada").value
     );
     produtos[index].quantidade += quantidade;
-    totalEntradas += quantidade;
+    entradas.push({ produto: produtos[index].nome, quantidade });
     localStorage.setItem("produtos", JSON.stringify(produtos));
+    localStorage.setItem("entradas", JSON.stringify(entradas));
     atualizarListaProdutos();
     formEntrada.reset();
     atualizarInformacoesGerais();
@@ -151,8 +154,9 @@ document.addEventListener("DOMContentLoaded", function () {
       document.getElementById("quantidade-saida").value
     );
     produtos[index].quantidade -= quantidade;
-    totalSaidas += quantidade;
+    saidas.push({ produto: produtos[index].nome, quantidade });
     localStorage.setItem("produtos", JSON.stringify(produtos));
+    localStorage.setItem("saidas", JSON.stringify(saidas));
     atualizarListaProdutos();
     formSaida.reset();
     atualizarInformacoesGerais();
@@ -194,7 +198,9 @@ document.addEventListener("DOMContentLoaded", function () {
       const precoCusto = produto.precoCusto || 0;
       const margemLucro = produto.margemLucro || 0;
       const precoVenda = precoCusto * (1 + margemLucro / 100);
-      const quantidadeVendida = totalSaidas; // Atualizar com a lógica correta de vendas reais
+      const quantidadeVendida = saidas
+        .filter((saida) => saida.produto === produto.nome)
+        .reduce((acc, saida) => acc + saida.quantidade, 0);
       const lucroEstimadoPorProduto =
         (precoVenda - precoCusto) * produto.quantidade;
       const lucroRealPorProduto = (precoVenda - precoCusto) * quantidadeVendida;
@@ -231,22 +237,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 <th>Real</th>
             </tr>
             <tr>
-                <td>Lucro Mensal</td>
+                <td>Lucro</td>
                 <td style="color: ${
                   lucroMensalEstimado >= 0 ? "green" : "red"
                 };">R$ ${lucroMensalEstimado.toFixed(2)}</td>
                 <td style="color: ${
                   lucroMensalReal >= 0 ? "green" : "red"
                 };">R$ ${lucroMensalReal.toFixed(2)}</td>
-            </tr>
-            <tr>
-                <td>Lucro Semanal</td>
-                <td style="color: ${
-                  lucroSemanalEstimado >= 0 ? "green" : "red"
-                };">R$ ${lucroSemanalEstimado.toFixed(2)}</td>
-                <td style="color: ${
-                  lucroSemanalReal >= 0 ? "green" : "red"
-                };">R$ ${lucroSemanalReal.toFixed(2)}</td>
             </tr>
             <tr>
                 <td>Retirada de Lucro</td>
