@@ -1,74 +1,138 @@
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f4f4f4;
+  font-family: "Noto Sans", sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
 
 header {
-    background-color: #333;
-    color: white;
-    padding: 1rem;
-    text-align: center;
+  background-color: #333;
+  color: white;
+  padding: 1rem;
+  text-align: center;
+  width: 100%;
+  position: fixed;
+  top: 0;
 }
 
 nav ul {
-    list-style: none;
-    padding: 0;
+  list-style: none;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  margin: 0;
 }
 
 nav ul li {
-    display: inline;
-    margin: 0 1rem;
+  margin: 0 1rem;
 }
 
 nav ul li a {
-    color: white;
-    text-decoration: none;
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
 }
 
 main {
-    padding: 1rem;
+  padding: 5rem 1rem 1rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 800px;
 }
 
 section {
-    display: none;
+  display: none;
+  width: 100%;
 }
 
 section.active {
-    display: block;
+  display: block;
 }
 
 form {
-    margin: 1rem 0;
+  margin: 1rem 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 form label {
-    display: block;
-    margin: 0.5rem 0;
+  margin: 0.5rem 0;
 }
 
-form input, form select, form button {
-    display: block;
-    margin: 0.5rem 0;
-    padding: 0.5rem;
+form input,
+form select,
+form button {
+  margin: 0.5rem 0;
+  padding: 0.5rem;
+  width: 100%;
+  max-width: 300px;
 }
 
 table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 1rem 0;
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
 }
 
-table, th, td {
-    border: 1px solid #ddd;
+table,
+th,
+td {
+  border: 1px solid #ddd;
 }
 
-th, td {
-    padding: 0.5rem;
-    text-align: left;
+th,
+td {
+  padding: 0.5rem;
+  text-align: left;
 }
 
 th {
-    background-color: #f2f2f2;
+  background-color: #f2f2f2;
+}
+
+button {
+  background-color: #333;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+button:hover {
+  background-color: #555;
+}
+
+#relatorio {
+  margin-top: 2rem;
+  width: 100%;
+}
+
+#relatorio h3 {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+#relatorio table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#relatorio th,
+#relatorio td {
+  border: 1px solid #ddd;
+  padding: 0.5rem;
+  text-align: center;
+}
+
+#relatorio th {
+  background-color: #f2f2f2;
 }

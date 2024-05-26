@@ -1,121 +1,115 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Gerenciador de Adega</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
     <header>
-        <h1>Gerenciador de Adega</h1>
-        <nav>
-            <ul>
-                <li><a href="#" onclick="showSection('home')">Home</a></li>
-                <li><a href="#" onclick="showSection('produtos')">Produtos</a></li>
-                <li><a href="#" onclick="showSection('entradas')">Entradas</a></li>
-                <li><a href="#" onclick="showSection('saidas')">Saídas</a></li>
-                <li><a href="#" onclick="showSection('custos')">Custos</a></li>
-                <li><a href="#" onclick="showSection('relatorios')">Relatórios</a></li>
-            </ul>
-        </nav>
+      <h1>Gerenciador de Adega</h1>
+      <nav>
+        <ul>
+          <li><a href="#" onclick="showSection('home')">Home</a></li>
+          <li><a href="#" onclick="showSection('produtos')">Produtos</a></li>
+          <li><a href="#" onclick="showSection('entradas')">Entradas</a></li>
+          <li><a href="#" onclick="showSection('saidas')">Saídas</a></li>
+          <li><a href="#" onclick="showSection('custos')">Custos</a></li>
+          <li>
+            <a href="#" onclick="showSection('relatorios')">Relatórios</a>
+          </li>
+        </ul>
+      </nav>
     </header>
     <main>
-        <section id="home" class="active">
-            <h2>Bem-vindo ao Gerenciador de Adega</h2>
-            <p>Use o menu acima para navegar.</p>
-            <div id="info-geral">
-                <h3>Informações Gerais</h3>
-                <table>
-                    <tr>
-                        <th>Produto</th>
-                        <th>Quantidade Atual</th>
-                        <th>Preço de Custo</th>
-                        <th>Margem de Lucro (%)</th>
-                        <th>Preço de Venda</th>
-                    </tr>
-                    <tbody id="tabela-produtos"></tbody>
-                </table>
-            </div>
-        </section>
-        <section id="produtos">
-            <h2>Produtos</h2>
-            <form id="form-produto">
-                <label for="nome-produto">Nome:</label>
-                <input type="text" id="nome-produto" required>
-                <label for="quantidade-produto">Quantidade:</label>
-                <input type="number" id="quantidade-produto" required>
-                <label for="preco-custo-produto">Preço de Custo:</label>
-                <input type="number" id="preco-custo-produto" step="0.01" required>
-                <label for="margem-lucro-produto">Margem de Lucro (%):</label>
-                <select id="margem-lucro-produto">
-                    <option value="1">1%</option>
-                    <option value="2">2%</option>
-                    <option value="3">3%</option>
-                    <option value="4">4%</option>
-                    <option value="5">5%</option>
-                    <option value="6">6%</option>
-                    <option value="7">7%</option>
-                    <option value="8">8%</option>
-                    <option value="9">9%</option>
-                    <option value="10">10%</option>
-                    <option value="11">11%</option>
-                    <option value="12">12%</option>
-                    <option value="13">13%</option>
-                    <option value="14">14%</option>
-                    <option value="15">15%</option>
-                    <option value="16">16%</option>
-                    <option value="17">17%</option>
-                    <option value="18">18%</option>
-                    <option value="19">19%</option>
-                    <option value="20">20%</option>
-                </select>
-                <button type="submit">Adicionar Produto</button>
-            </form>
-            <ul id="lista-produtos"></ul>
-        </section>
-        <section id="entradas">
-            <h2>Entradas</h2>
-            <form id="form-entrada">
-                <label for="produto-entrada">Produto:</label>
-                <select id="produto-entrada"></select>
-                <label for="quantidade-entrada">Quantidade:</label>
-                <input type="number" id="quantidade-entrada" required>
-                <button type="submit">Registrar Entrada</button>
-            </form>
-        </section>
-        <section id="saidas">
-            <h2>Saídas</h2>
-            <form id="form-saida">
-                <label for="produto-saida">Produto:</label>
-                <select id="produto-saida"></select>
-                <label for="quantidade-saida">Quantidade:</label>
-                <input type="number" id="quantidade-saida" required>
-                <button type="submit">Registrar Saída</button>
-            </form>
-        </section>
-        <section id="custos">
-            <h2>Custos Fixos e Capital de Giro</h2>
-            <form id="form-custos">
-                <label for="aluguel">Aluguel:</label>
-                <input type="number" id="aluguel" step="0.01" required>
-                <label for="luz">Conta de Luz:</label>
-                <input type="number" id="luz" step="0.01" required>
-                <label for="agua">Conta de Água:</label>
-                <input type="number" id="agua" step="0.01" required>
-                <label for="funcionarios">Funcionários:</label>
-                <input type="number" id="funcionarios" step="0.01" required>
-                <label for="capital-giro">Capital de Giro:</label>
-                <input type="number" id="capital-giro" step="0.01" required>
-                <button type="submit">Salvar Custos</button>
-            </form>
-        </section>
-        <section id="relatorios">
-            <h2>Relatórios</h2>
-            <button onclick="gerarRelatorio()">Gerar Relatório</button>
-            <div id="relatorio"></div>
-        </section>
+      <section id="home" class="active">
+        <h2>Bem-vindo ao Gerenciador de Adega</h2>
+        <p>Use o menu acima para navegar.</p>
+        <div id="info-geral">
+          <h3>Informações Gerais</h3>
+          <table>
+            <tr>
+              <th>Produto</th>
+              <th>Quantidade Atual</th>
+              <th>Preço de Custo</th>
+              <th>Margem de Lucro (%)</th>
+              <th>Preço de Venda</th>
+              <th>Ações</th>
+            </tr>
+            <tbody id="tabela-produtos"></tbody>
+          </table>
+          <button onclick="confirmarLimpeza()">Limpar Dados</button>
+        </div>
+      </section>
+      <section id="produtos">
+        <h2>Produtos</h2>
+        <form id="form-produto">
+          <label for="nome-produto">Nome:</label>
+          <input type="text" id="nome-produto" required />
+          <label for="quantidade-produto">Quantidade:</label>
+          <input type="number" id="quantidade-produto" required />
+          <label for="preco-custo-produto">Preço de Custo:</label>
+          <input type="number" id="preco-custo-produto" step="0.01" required />
+          <label for="margem-lucro-produto">Margem de Lucro (%):</label>
+          <select id="margem-lucro-produto" required>
+            <option value="5">5%</option>
+            <option value="10">10%</option>
+            <option value="15">15%</option>
+            <option value="20" selected>20%</option>
+            <option value="25">25%</option>
+            <option value="30">30%</option>
+          </select>
+          <button type="submit">Adicionar Produto</button>
+        </form>
+        <ul id="lista-produtos"></ul>
+      </section>
+      <section id="entradas">
+        <h2>Entradas</h2>
+        <form id="form-entrada">
+          <label for="produto-entrada">Produto:</label>
+          <select id="produto-entrada"></select>
+          <label for="quantidade-entrada">Quantidade:</label>
+          <input type="number" id="quantidade-entrada" required />
+          <button type="submit">Registrar Entrada</button>
+        </form>
+      </section>
+      <section id="saidas">
+        <h2>Saídas</h2>
+        <form id="form-saida">
+          <label for="produto-saida">Produto:</label>
+          <select id="produto-saida"></select>
+          <label for="quantidade-saida">Quantidade:</label>
+          <input type="number" id="quantidade-saida" required />
+          <button type="submit">Registrar Saída</button>
+        </form>
+      </section>
+      <section id="custos">
+        <h2>Custos Fixos e Capital de Giro</h2>
+        <form id="form-custos">
+          <label for="aluguel">Aluguel:</label>
+          <input type="number" id="aluguel" step="0.01" required />
+          <label for="luz">Conta de Luz:</label>
+          <input type="number" id="luz" step="0.01" required />
+          <label for="agua">Conta de Água:</label>
+          <input type="number" id="agua" step="0.01" required />
+          <label for="funcionarios">Funcionários:</label>
+          <input type="number" id="funcionarios" step="0.01" required />
+          <label for="capital-giro">Capital de Giro:</label>
+          <input type="number" id="capital-giro" step="0.01" required />
+          <button type="submit">Salvar Custos</button>
+        </form>
+      </section>
+      <section id="relatorios">
+        <h2>Relatórios</h2>
+        <button onclick="gerarRelatorio()">Gerar Relatório</button>
+        <div id="relatorio"></div>
+      </section>
     </main>
     <script src="script.js"></script>
-</body>
+  </body>
 </html>
