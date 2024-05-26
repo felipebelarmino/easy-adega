@@ -12,10 +12,15 @@ document.addEventListener("DOMContentLoaded", function () {
   const estoqueAtualSpan = document.getElementById("estoque-atual");
   const tabelaProdutos = document.getElementById("tabela-produtos");
   const formCustos = document.getElementById("form-custos");
+  const modal = document.getElementById("modal-confirmacao");
+  const modalMensagem = document.getElementById("modal-mensagem");
+  const btnConfirmarRemocao = document.getElementById("confirmar-remocao");
 
   let produtos = JSON.parse(localStorage.getItem("produtos")) || [];
   let entradas = JSON.parse(localStorage.getItem("entradas")) || [];
   let saidas = JSON.parse(localStorage.getItem("saidas")) || [];
+  let produtosRemovidos =
+    JSON.parse(localStorage.getItem("produtosRemovidos")) || [];
   let custosFixos = JSON.parse(localStorage.getItem("custosFixos")) || {
     aluguel: 0,
     luz: 0,
@@ -23,6 +28,8 @@ document.addEventListener("DOMContentLoaded", function () {
     funcionarios: 0,
     capitalGiro: 0,
   };
+  let produtoParaRemover = null;
+  let acaoAtual = "";
 
   window.showSection = function (sectionId) {
     sections.forEach((section) => section.classList.remove("active"));
@@ -66,7 +73,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 <td>R$ ${precoCusto.toFixed(2)}</td>
                 <td>${margemLucro}%</td>
                 <td>R$ ${precoVenda.toFixed(2)}</td>
-                <td><button onclick="removerProduto(${index})">Remover</button></td>
+                <td><button onclick="abrirModal('remover', ${index})">Remover</button></td>
             `;
       tabelaProdutos.appendChild(tr);
     });
@@ -76,21 +83,45 @@ document.addEventListener("DOMContentLoaded", function () {
     estoqueAtualSpan.textContent = totalEstoque;
   }
 
-  window.removerProduto = function (index) {
-    produtos.splice(index, 1);
-    localStorage.setItem("produtos", JSON.stringify(produtos));
-    atualizarListaProdutos();
-    atualizarInformacoesGerais();
+  window.abrirModal = function (acao, index) {
+    acaoAtual = acao;
+    produtoParaRemover = index;
+    if (acao === "remover") {
+      modalMensagem.textContent =
+        "Tem certeza de que deseja remover este produto? Todos os dados de vendas associadas a este produto serão mantidos no relatório.";
+    } else if (acao === "limpar") {
+      modalMensagem.textContent =
+        "Tem certeza de que deseja limpar todos os dados? Esta ação não pode ser desfeita.";
+    }
+    modal.style.display = "block";
   };
 
-  window.confirmarLimpeza = function () {
-    if (
-      confirm(
-        "Tem certeza de que deseja limpar todos os dados? Esta ação não pode ser desfeita."
-      )
-    ) {
+  window.fecharModal = function () {
+    modal.style.display = "none";
+  };
+
+  window.confirmarAcao = function () {
+    if (acaoAtual === "remover") {
+      removerProduto(produtoParaRemover);
+    } else if (acaoAtual === "limpar") {
       limparDados();
     }
+    fecharModal();
+  };
+
+  window.removerProduto = function (index) {
+    const produtoRemovido = produtos.splice(index, 1)[0];
+    produtoRemovido.quantidadeVendida = saidas
+      .filter((saida) => saida.produto === produtoRemovido.nome)
+      .reduce((acc, saida) => acc + saida.quantidade, 0);
+    produtosRemovidos.push(produtoRemovido);
+    localStorage.setItem("produtos", JSON.stringify(produtos));
+    localStorage.setItem(
+      "produtosRemovidos",
+      JSON.stringify(produtosRemovidos)
+    );
+    atualizarListaProdutos();
+    atualizarInformacoesGerais();
   };
 
   window.limparDados = function () {
@@ -98,9 +129,11 @@ document.addEventListener("DOMContentLoaded", function () {
     localStorage.removeItem("entradas");
     localStorage.removeItem("saidas");
     localStorage.removeItem("custosFixos");
+    localStorage.removeItem("produtosRemovidos");
     produtos = [];
     entradas = [];
     saidas = [];
+    produtosRemovidos = [];
     custosFixos = {
       aluguel: 0,
       luz: 0,
@@ -216,6 +249,26 @@ document.addEventListener("DOMContentLoaded", function () {
             `;
       table.appendChild(row);
     });
+
+    // Adicionando vendas removidas ao relatório
+    produtosRemovidos.forEach((produto) => {
+      const precoCusto = produto.precoCusto || 0;
+      const margemLucro = produto.margemLucro || 0;
+      const precoVenda = precoCusto * (1 + margemLucro / 100);
+      const quantidadeVendida = produto.quantidadeVendida || 0;
+      const lucroRealPorProduto = (precoVenda - precoCusto) * quantidadeVendida;
+      lucroRealTotal += lucroRealPorProduto;
+      const row = document.createElement("tr");
+      row.innerHTML = `
+                <td>${produto.nome}</td>
+                <td>0</td>
+                <td>R$ ${precoVenda.toFixed(2)}</td>
+                <td>R$ 0.00</td>
+                <td>R$ ${lucroRealPorProduto.toFixed(2)}</td>
+            `;
+      table.appendChild(row);
+    });
+
     relatorio.appendChild(table);
 
     // Tabela de lucros
@@ -237,13 +290,22 @@ document.addEventListener("DOMContentLoaded", function () {
                 <th>Real</th>
             </tr>
             <tr>
-                <td>Lucro</td>
+                <td>Lucro Mensal</td>
                 <td style="color: ${
                   lucroMensalEstimado >= 0 ? "green" : "red"
                 };">R$ ${lucroMensalEstimado.toFixed(2)}</td>
                 <td style="color: ${
                   lucroMensalReal >= 0 ? "green" : "red"
                 };">R$ ${lucroMensalReal.toFixed(2)}</td>
+            </tr>
+            <tr>
+                <td>Lucro Semanal</td>
+                <td style="color: ${
+                  lucroSemanalEstimado >= 0 ? "green" : "red"
+                };">R$ ${lucroSemanalEstimado.toFixed(2)}</td>
+                <td style="color: ${
+                  lucroSemanalReal >= 0 ? "green" : "red"
+                };">R$ ${lucroSemanalReal.toFixed(2)}</td>
             </tr>
             <tr>
                 <td>Retirada de Lucro</td>

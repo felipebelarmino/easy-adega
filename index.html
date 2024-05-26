@@ -43,7 +43,7 @@
             </tr>
             <tbody id="tabela-produtos"></tbody>
           </table>
-          <button onclick="confirmarLimpeza()">Limpar Dados</button>
+          <button onclick="abrirModal('limpar')">Limpar Dados</button>
         </div>
       </section>
       <section id="produtos">
@@ -110,6 +110,19 @@
         <div id="relatorio"></div>
       </section>
     </main>
+
+    <!-- Modal -->
+    <div id="modal-confirmacao" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="fecharModal()">&times;</span>
+        <p id="modal-mensagem"></p>
+        <button id="confirmar-remocao" onclick="confirmarAcao()">
+          Confirmar
+        </button>
+        <button onclick="fecharModal()">Cancelar</button>
+      </div>
+    </div>
+
     <script src="script.js"></script>
   </body>
 </html>
